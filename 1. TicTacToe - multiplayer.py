@@ -1,9 +1,29 @@
+# Importing necessary libraries
 from collections import Counter
 
 BOARD_EMPTY = 0
 BOARD_PLAYER_X = 1
 BOARD_PLAYER_O = -1
 
+
+# Prints the current state of the board
+def print_board(s):
+    def convert(num):
+        if num == BOARD_PLAYER_X:
+            return 'X'
+        if num == BOARD_PLAYER_O:
+            return 'O'
+        return '-'
+
+    i = 0
+    for _ in range(3):
+        for _ in range(3):
+            print(convert(s[i]), end=' ')
+            i += 1
+        print()
+
+
+# Returns whose turn is it now
 def player(s):
     counter = Counter(s)
     x_places = counter[1]
@@ -12,21 +32,27 @@ def player(s):
     if x_places + o_places == 9:
         return None
     elif x_places > o_places:
-        return BOARD_PLAYER_O 
+        return BOARD_PLAYER_O
     else:
         return BOARD_PLAYER_X
 
+
+# Returns every possible move from takin in the user
 def actions(s):
     play = player(s)
     actions_list = [(play, i) for i in range(len(s)) if s[i] == BOARD_EMPTY]
     return actions_list
 
+
+# Returns the outcome of current move
 def result(s, a):
     (play, index) = a
     s_copy = s.copy()
     s_copy[index] = play
     return s_copy
 
+
+# Used to find out the best move
 def terminal(s):
     for i in range(3):
         if s[3 * i] == s[3 * i + 1] == s[3 * i + 2] != BOARD_EMPTY:
@@ -41,14 +67,15 @@ def terminal(s):
 
     if player(s) is None:
         return 0
-    
+
     return None
+
 
 def utility(s, cost):
     term = terminal(s)
     if term is not None:
         return (term, cost)
-    
+
     action_list = actions(s)
     utils = []
     for action in action_list:
@@ -60,15 +87,16 @@ def utility(s, cost):
     play = player(s)
     if play == BOARD_PLAYER_X:
         for i in range(len(utils)):
-           if utils[i][0] > score:
+            if utils[i][0] > score:
                 score = utils[i][0]
                 idx_cost = utils[i][1]
     else:
         for i in range(len(utils)):
-           if utils[i][0] < score:
+            if utils[i][0] < score:
                 score = utils[i][0]
                 idx_cost = utils[i][1]
-    return (score, idx_cost) 
+    return (score, idx_cost)
+
 
 def minimax(s):
     action_list = actions(s)
@@ -78,28 +106,14 @@ def minimax(s):
         utils.append((action, utility(new_s, 1)))
 
     if len(utils) == 0:
-        return ((0,0), (0, 0))
+        return ((0, 0), (0, 0))
 
-    sorted_list = sorted(utils, key=lambda l : l[0][1])
-    action = min(sorted_list, key = lambda l : l[1])
+    sorted_list = sorted(utils, key=lambda l: l[0][1])
+    action = min(sorted_list, key=lambda l: l[1])
     return action
 
 
-def print_board(s):
-    def convert(num):
-        if num == BOARD_PLAYER_X:
-            return 'X'
-        if num == BOARD_PLAYER_O:
-            return 'O'
-        return '_'
-
-    i = 0
-    for _ in range(3):
-        for _ in range(3):
-            print(convert(s[i]), end=' ')
-            i += 1
-        print()
-
+# Driver code (Main Function)
 if __name__ == '__main__':
     s = [BOARD_EMPTY for _ in range(9)]
     print('|------- WELCOME TO TIC TAC TOE -----------|')
@@ -112,11 +126,11 @@ if __name__ == '__main__':
             x = int(input('Enter the x-coordinate [0-2]: '))
             y = int(input('Enter the y-coordinate [0-2]: '))
             index = 3 * x + y
-    
-            if not s[index] == BOARD_EMPTY: 
+
+            if not s[index] == BOARD_EMPTY:
                 print('That coordinate is already taken. Please try again.')
                 continue
-    
+
             s = result(s, (1, index))
             print_board(s)
         else:
@@ -132,3 +146,6 @@ if __name__ == '__main__':
         print("You have lost!")
     else:
         print("It's a tie.")
+
+
+# P Sai Krishna - 1BM21CS123
