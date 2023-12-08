@@ -6,15 +6,11 @@ def find_blank(puzzle):
                 return i, j
 
 # Function to check if the puzzle is solved
-
-
 def is_goal(puzzle):
     goal_state = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
     return puzzle == goal_state
 
 # Function to move tiles in the puzzle
-
-
 def move_tile(puzzle, direction):
     blank_row, blank_col = find_blank(puzzle)
     new_puzzle = [row[:] for row in puzzle]  # Create a copy of the puzzle
@@ -43,8 +39,6 @@ def print_puzzle(puzzle):
     print()
 
 # Iterative Deepening Search
-
-
 def iterative_deepening_search(start_state):
     depth_limit = 4  # Set the fixed depth limit
 
@@ -58,8 +52,6 @@ def iterative_deepening_search(start_state):
         return None
 
 # Depth-Limited Search
-
-
 def depth_limited_search(state, depth_limit):
     return recursive_dls(state, depth_limit)
 
@@ -80,8 +72,6 @@ def recursive_dls(state, depth_limit):
         return None
 
 # Function to take user input for the initial puzzle state
-
-
 def get_user_input():
     print("Enter the initial puzzle state (3x3 matrix, use 0 for the blank tile):")
     puzzle = []
